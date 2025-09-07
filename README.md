@@ -1,5 +1,9 @@
 # Fake News Detection System
 
+## Video Demo
+[Watch a quick video demo of the app here](https://youtu.be/cDps-uYoSHo)
+
+
 An end-to-end machine learning project that classifies news articles as real or fake using various ML algorithms and provides an interactive web interface for testing.
 
 ## 🚀 Features
@@ -28,7 +32,6 @@ An end-to-end machine learning project that classifies news articles as real or 
 - **NLP**: NLTK, TF-IDF Vectorization
 - **Model Deployment**: joblib for model persistence
 
-## 📁 Project Structure
 
 ```
 # 🔍 Fake News Detection System
@@ -91,6 +94,17 @@ streamlit run analytics_dashboard.py
 python demo.py
 ```
 
+### 📥 Dataset
+
+Due to size and licensing restrictions, `True.csv` and `Fake.csv` are **not included** in this repo.
+
+Please download them from:
+
+[Kaggle Fake and Real News Dataset](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset)
+
+Place them in the `data/processed/` directory before training or running the models.
+
+
 ## 💻 How to Use
 
 1. **Open the web app** in your browser (usually http://localhost:8501)
@@ -123,10 +137,14 @@ python demo.py
 
 ## 📊 Model Performance
 
-The system achieves high accuracy across all three models:
-- **Random Forest**: ~99.7% accuracy
-- **SVM**: ~99.3% accuracy  
-- **Logistic Regression**: ~98.9% accuracy
+⚠️ **Note:** The following results are based on previously saved model evaluations. Some metrics (e.g., 99.7% accuracy, 0.0s training time) may be unrealistic and could result from:
+- Evaluating on training data instead of a test split
+- Data leakage
+- Rounding/formatting errors in the dashboard
+
+✅ For accurate results, retrain the models using:
+```bash
+python -m models.model_trainer
 
 ## 🎯 Applications
 
@@ -255,7 +273,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 **Your Name**
 - GitHub: [@balgaurav](https://github.com/balgaurav)
-- LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/gaurav-bal/)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/gaurav-bal/)
 - Email: gbal@uwaterloo.ca
 
 ## 🙏 Acknowledgments
