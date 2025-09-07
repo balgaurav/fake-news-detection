@@ -89,24 +89,38 @@ def main():
             results = joblib.load('saved_models/results_summary.joblib')
             if selected_model in results:
                 model_results = results[selected_model]
-                st.metric("Accuracy", f"{model_results['test_accuracy']:.1%}")
-                st.metric("Precision", f"{model_results['precision']:.1%}")
-                st.metric("F1-Score", f"{model_results['f1_score']:.1%}")
-        except:
-            st.warning("Model results not found. Please train models first.")
+                # Support multiple possible key names depending on how results were saved
+                accuracy = model_results.get('test_accuracy') or model_results.get('accuracy')
+                if accuracy is not None:
+                    st.metric("Accuracy", f"{accuracy:.1%}")
+                else:
+                    st.metric("Accuracy", "N/A")
+
+                precision = model_results.get('precision')
+                f1 = model_results.get('f1_score')
+                if precision is not None:
+                    st.metric("Precision", f"{precision:.1%}")
+                else:
+                    st.metric("Precision", "N/A")
+
+                if f1 is not None:
+                    st.metric("F1-Score", f"{f1:.1%}")
+                else:
+                    st.metric("F1-Score", "N/A")
+        except Exception:
+            st.warning("Model results not found or could not be read. Please ensure saved_models/results_summary.joblib exists and is readable.")
         
         st.markdown("---")
         
         # About section
         st.markdown("### ℹ️ About")
         st.markdown("""
-        This system analyzes text patterns to detect potentially fake news articles.
+        This system uses machine learning to detect fake news articles.
         
-        **Features:**
-        - Multiple ML models
-        - Real-time predictions
-        - Confidence scoring
-        - Performance visualization
+        **How it works:**
+        - Analyzes text patterns and language
+        - Uses three different ML algorithms
+        - Provides confidence scores
         """)
     
     # Load models
@@ -138,21 +152,17 @@ def main():
                 help="Enter the full text of the news article you want to analyze"
             )
         else:
-            # Example articles
+            # Simplified examples
             examples = {
-                "Real News Example": """
-                Scientists at MIT have developed a new breakthrough in renewable energy technology. 
-                The research team, led by Dr. Sarah Johnson, has created a more efficient solar panel 
-                that can generate 40% more electricity than traditional panels. The study, published 
-                in Nature Energy, shows promising results for large-scale implementation. The technology 
-                uses advanced materials and could significantly reduce the cost of solar power generation.
+                "Suspicious News Example": """
+                BREAKING: Scientists have discovered that eating chocolate for breakfast 
+                can make you lose 20 pounds in one week! Doctors are amazed by this 
+                simple trick that the weight loss industry doesn't want you to know!
                 """,
-                "Fake News Example": """
-                BREAKING: Government secretly plans to replace all birds with drones by 2025! 
-                Insider sources reveal shocking truth about surveillance program. Birds aren't real - 
-                they're all government spy drones! Wake up people! Share this before they delete it! 
-                The mainstream media won't tell you this because they're in on it too! 
-                #BirdsArentReal #GovernmentConspiracy
+                "Legitimate News Example": """
+                The Federal Reserve announced a 0.25 percentage point increase in interest 
+                rates following their meeting this week. The decision reflects ongoing efforts 
+                to combat inflation while supporting economic growth.
                 """
             }
             
@@ -193,49 +203,18 @@ def main():
                         ''', unsafe_allow_html=True)
                     
                     # Confidence breakdown
-                    st.markdown("### 📈 Confidence Breakdown")
+                    st.markdown("### 📈 Confidence Score")
                     
-                    # Create gauge chart for confidence
-                    fig_gauge = go.Figure(go.Indicator(
-                        mode = "gauge+number+delta",
-                        value = confidence * 100,
-                        domain = {'x': [0, 1], 'y': [0, 1]},
-                        title = {'text': "Prediction Confidence (%)"},
-                        delta = {'reference': 50},
-                        gauge = {
-                            'axis': {'range': [None, 100]},
-                            'bar': {'color': "darkblue"},
-                            'steps': [
-                                {'range': [0, 50], 'color': "lightgray"},
-                                {'range': [50, 80], 'color': "yellow"},
-                                {'range': [80, 100], 'color': "green"}
-                            ],
-                            'threshold': {
-                                'line': {'color': "red", 'width': 4},
-                                'thickness': 0.75,
-                                'value': 90
-                            }
-                        }
-                    ))
-                    fig_gauge.update_layout(height=300)
-                    st.plotly_chart(fig_gauge, use_container_width=True)
+                    # Simple confidence bar
+                    st.progress(confidence)
+                    st.write(f"**Confidence: {confidence:.1%}**")
                     
-                    # Probability distribution
-                    prob_df = pd.DataFrame({
-                        'Classification': ['Fake News', 'Real News'],
-                        'Probability': [probabilities[0], probabilities[1]]
-                    })
-                    
-                    fig_bar = px.bar(
-                        prob_df, 
-                        x='Classification', 
-                        y='Probability',
-                        color='Classification',
-                        color_discrete_map={'Fake News': '#dc3545', 'Real News': '#28a745'},
-                        title="Classification Probabilities"
-                    )
-                    fig_bar.update_layout(showlegend=False, height=400)
-                    st.plotly_chart(fig_bar, use_container_width=True)
+                    if confidence > 0.8:
+                        st.success("High confidence prediction")
+                    elif confidence > 0.6:
+                        st.warning("Medium confidence prediction")
+                    else:
+                        st.error("Low confidence - result may be uncertain")
                     
                     # Explanation
                     explanation = get_prediction_explanation(prediction, confidence)
@@ -249,74 +228,37 @@ def main():
                 st.warning("⚠️ Please enter a news article to analyze.")
     
     with col2:
-        st.markdown("### 📊 Model Comparison")
+        st.markdown("### 📊 Model Performance")
         
         # Display model comparison if results are available
         try:
             results = joblib.load('saved_models/results_summary.joblib')
             
-            # Create comparison dataframe
-            comparison_data = []
+            # Simple metrics display
             for model_name, model_results in results.items():
-                comparison_data.append({
-                    'Model': model_name.replace('_', ' ').title(),
-                    'Accuracy': model_results['test_accuracy'],
-                    'Precision': model_results['precision'],
-                    'F1-Score': model_results['f1_score']
-                })
-            
-            df_comparison = pd.DataFrame(comparison_data)
-            
-            # Bar chart comparison
-            fig_comparison = px.bar(
-                df_comparison, 
-                x='Model', 
-                y='Accuracy',
-                title='Model Accuracy Comparison',
-                color='Accuracy',
-                color_continuous_scale='viridis'
-            )
-            fig_comparison.update_layout(height=300, showlegend=False)
-            st.plotly_chart(fig_comparison, use_container_width=True)
-            
-            # Metrics table
-            st.markdown("#### Model Metrics")
-            styled_df = df_comparison.style.format({
-                'Accuracy': '{:.1%}',
-                'Precision': '{:.1%}',
-                'F1-Score': '{:.1%}'
-            }).background_gradient(subset=['Accuracy', 'Precision', 'F1-Score'])
-            
-            st.dataframe(styled_df, use_container_width=True)
-            
-        except:
-            st.warning("📊 Model comparison data not available. Train models to see comparison.")
-        
-        st.markdown("### 📈 Usage Statistics")
-        
-        # Display prediction logs if available
-        try:
-            if os.path.exists('prediction_logs.csv'):
-                logs_df = pd.read_csv('prediction_logs.csv')
-                
-                # Recent predictions count
-                st.metric("Total Predictions", len(logs_df))
-                
-                # Prediction distribution
-                pred_counts = logs_df['prediction'].value_counts()
-                fig_pie = px.pie(
-                    values=pred_counts.values,
-                    names=pred_counts.index,
-                    title="Prediction Distribution"
+                accuracy = model_results.get('test_accuracy', 0)
+                st.metric(
+                    f"{model_name.replace('_', ' ').title()}",
+                    f"{accuracy:.1%} accurate"
                 )
-                fig_pie.update_layout(height=300)
-                st.plotly_chart(fig_pie, use_container_width=True)
-                
-            else:
-                st.info("No prediction history available yet.")
-                
+            
         except:
-            st.info("Prediction logs not available.")
+            st.warning("📊 Model performance data not available.")
+        
+        st.markdown("### 📈 How It Works")
+        st.markdown("""
+        **1. Text Processing**
+        - Cleans and prepares the article text
+        - Removes unnecessary characters and words
+        
+        **2. Feature Extraction**  
+        - Converts text into numerical features
+        - Identifies important word patterns
+        
+        **3. Machine Learning**
+        - Three algorithms analyze the text
+        - Each provides a prediction and confidence
+        """)
 
 def log_prediction(article_preview, prediction, confidence, model_used):
     """Log prediction for statistics."""
