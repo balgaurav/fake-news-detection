@@ -12,11 +12,13 @@ An end-to-end machine learning project that classifies news articles as real or 
 
 ## 📊 Results
 
-- **Best Model**: Random Forest Classifier
-- **Accuracy**: 94.2% (improved from baseline 89.1%)
-- **Precision**: 94.8% for real news detection
-- **Recall**: 93.6% for fake news detection
-- **F1-Score**: 94.1%
+**Note:** Some metrics in this repository were reported from prior runs. Very high accuracy values and near-zero training times have been observed in saved results; these may indicate evaluation-on-train or other issues. Run `inspect_results.py` (included in the repo) to validate saved metrics before publishing.
+
+- **Best Model (example)**: Random Forest Classifier
+- **Accuracy (example)**: 94.2%  
+- **Precision (example)**: 94.8% for real news detection  
+- **Recall (example)**: 93.6% for fake news detection  
+- **F1-Score (example)**: 94.1%
 
 ## 🛠️ Tech Stack
 
@@ -252,9 +254,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+- GitHub: [@balgaurav](https://github.com/balgaurav)
+- LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/gaurav-bal/)
+- Email: gbal@uwaterloo.ca
 
 ## 🙏 Acknowledgments
 
