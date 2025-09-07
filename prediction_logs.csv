@@ -1,0 +1,40 @@
+timestamp,article_preview,prediction,confidence,model_used
+2025-08-26 01:42:06,"BREAKING NEWS: Local Squirrel Declares Itself Mayor of Small Town, Holds Press Conference
+
+By: Fores",Fake,0.68,random_forest
+2025-08-26 01:42:50,"BREAKING NEWS: Local Squirrel Declares Itself Mayor of Small Town, Holds Press Conference
+
+By: Fores",Fake,0.7699230307898026,logistic_regression
+2025-08-26 01:43:05,"BREAKING NEWS: Local Squirrel Declares Itself Mayor of Small Town, Holds Press Conference
+
+By: Fores",Fake,0.8736855229458327,svm
+2025-08-26 01:43:23,"
+                Scientists at MIT have developed a new breakthrough in renewable energy technology.",Fake,0.89,random_forest
+2025-08-26 01:43:31,"
+                Scientists at MIT have developed a new breakthrough in renewable energy technology.",Fake,0.89,random_forest
+2025-08-26 01:43:51,"
+                BREAKING: Government secretly plans to replace all birds with drones by 2025! 
+    ",Fake,0.93,random_forest
+2025-08-26 01:44:02,"
+                Scientists at MIT have developed a new breakthrough in renewable energy technology.",Fake,0.8828489544846859,svm
+2025-08-26 01:48:11,"2020-2023: The Global Impact of the COVID-19 Pandemic
+
+One of the defining global events of recent y",Fake,0.7,random_forest
+2025-08-26 01:48:19,"2020-2023: The Global Impact of the COVID-19 Pandemic
+
+One of the defining global events of recent y",Fake,0.5563131258033378,logistic_regression
+2025-08-26 01:48:23,"2020-2023: The Global Impact of the COVID-19 Pandemic
+
+One of the defining global events of recent y",Real,0.5932955043440208,svm
+2025-08-26 01:53:03,"
+                Scientists at MIT have developed a new breakthrough in renewable energy technology.",Fake,0.89,random_forest
+2025-09-06 22:27:50,The Federal Reserve raised interest rates by 0.25% today in response to ongoing inflation concerns. ,Fake,0.92,random_forest
+2025-09-06 22:43:59,"
+                BREAKING: Scientists have discovered that eating chocolate for breakfast 
+         ",Fake,0.9947833162803228,svm
+2025-09-06 22:44:10,"
+                BREAKING: Scientists have discovered that eating chocolate for breakfast 
+         ",Fake,0.95,random_forest
+2025-09-06 22:59:55," ""Scientists have discovered a revolutionary new drug that can cure all known diseases including can",Fake,0.89,random_forest
+2025-09-06 23:01:51,Scientists have discovered a revolutionary new drug that can cure all known diseases including cance,Fake,0.9550702775758612,svm
+2025-09-06 23:04:37,Scientists have discovered a revolutionary new drug that can cure all known diseases including cance,Fake,0.9550702775758612,svm
